@@ -12,11 +12,11 @@ class AppConfig {
 
   @Bean
   JedisConnectionFactory jedisConnectionFactory() {
-    /*RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("localhost", 6379);
-    redisStandaloneConfiguration.setPassword(RedisPassword.of("yourRedisPasswordIfAny"));
+    RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("redis-server", 6379);
+    //redisStandaloneConfiguration.setPassword(RedisPassword.of("yourRedisPasswordIfAny"));
     JedisConnectionFactory jedisConFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-    return jedisConFactory;*/
-    return new JedisConnectionFactory();
+    return jedisConFactory;
+    //return new JedisConnectionFactory();
   }
 
   @Bean

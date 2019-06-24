@@ -22,13 +22,14 @@ public class DemoApplication {
     @RequestMapping("/")
     public String home() {
         System.out.println("root");
+        System.exit(1);
         return "Hello Docker World";
     }
 
     @RequestMapping("/save")
     public void saveStudent() {
         Student student = new Student(
-                "Eng2015001", "John Doe", Student.Gender.MALE, 1);
+                "docker-1", "John Doe", Student.Gender.MALE, 1);
         Student save = studentRepository.save(student);
         System.out.println(save.getId());
     }
@@ -36,7 +37,7 @@ public class DemoApplication {
     @RequestMapping("/get")
     public String getStudent() {
         Student retrievedStudent =
-                studentRepository.findById("Eng2015001").get();
+                studentRepository.findById("docker-1").get();
         System.out.println(retrievedStudent.getName());
         return retrievedStudent.getName();
     }
