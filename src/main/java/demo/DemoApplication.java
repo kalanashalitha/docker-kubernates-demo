@@ -22,7 +22,7 @@ public class DemoApplication {
     @RequestMapping("/")
     public String home() {
         System.out.println("root");
-        System.exit(1);
+        //System.exit(1);
         return "Hello Docker World";
     }
 
