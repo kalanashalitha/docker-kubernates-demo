@@ -21,7 +21,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
-task react(type: NodeTask) {
-	script = project.file('frontend/node_modules/.bin/webpack')
-	args = ['frontend/webpack.config.js']
+task buildFrontend(type: NpmTask) {
+	workingDir = file("${project.projectDir}/frontend")
+	args = ['run', 'webpack']
+}
+
+task copyFrontendDist(type: Copy,dependsOn:['buildFrontend']) {
+	from 'frontend/dist'
+	into 'src/main/resources/static'
 }
