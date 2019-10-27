@@ -1,28 +1,19 @@
 package demo;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisPassword;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-class AppConfig {
+@EnableWebSecurity(debug = true)
+class AppConfig extends WebSecurityConfigurerAdapter {
 
-  @Bean
-  JedisConnectionFactory jedisConnectionFactory() {
-    RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("redis-server", 6379);
-    //redisStandaloneConfiguration.setPassword(RedisPassword.of("yourRedisPasswordIfAny"));
-    JedisConnectionFactory jedisConFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-    return jedisConFactory;
-    //return new JedisConnectionFactory();
-  }
 
-  @Bean
-  public RedisTemplate<String, Object> redisTemplate() {
-    RedisTemplate<String, Object> template = new RedisTemplate<>();
-    template.setConnectionFactory(jedisConnectionFactory());
-    return template;
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests().anyRequest().authenticated()
+            .and()
+            .oauth2Login();
   }
 }
