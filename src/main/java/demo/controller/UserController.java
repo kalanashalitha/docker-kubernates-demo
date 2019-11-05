@@ -1,5 +1,13 @@
 package demo.controller;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import demo.model.User;
+import demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,13 +30,14 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    /*private static final HttpTransport httpTransport = new NetHttpTransport();
+    private static final HttpTransport httpTransport = new NetHttpTransport();
     private static final JsonFactory jsonFactory = new JacksonFactory();
     @Autowired
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.POST,value ="/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody String idToken) throws GeneralSecurityException, IOException {
+        System.out.println("aaaaaaaaaaaaaaaaaaaa"+idToken);
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
                 .setAudience(Collections.singletonList("968290368770-41286pviqm741nh77i2e7bcvc81p45qd.apps.googleusercontent.com"))
                 // Or, if multiple clients access the backend:
@@ -78,5 +87,5 @@ public class UserController {
             System.out.println("Invalid ID token.");
             return ResponseEntity.badRequest().build();
         }
-    }*/
+    }
 }
