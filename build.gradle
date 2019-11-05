@@ -22,7 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.2.0.RELEASE'
-
+	compile 'com.google.apis:google-api-services-oauth2:v1-rev155-1.25.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
