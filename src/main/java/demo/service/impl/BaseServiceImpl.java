@@ -24,7 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BaseServiceImpl<Entity extends User, ID extends String> implements BaseService<Entity, ID> {
 
+    public BaseServiceImpl(UserRepository<Entity, ID> repository) {
+        this.repository = repository;
+    }
+    public BaseServiceImpl() {
+    }
+
     //private Repository<Entity,ID> repository;
+    @Autowired
     private UserRepository<Entity,ID> repository;
     
     @Override

@@ -12,7 +12,8 @@ import java.util.Optional;
 @Service@Transactional
 public class UserServiceImpl<Entity extends User,ID extends String> extends BaseServiceImpl<User,String> implements UserService<Entity,ID> {
 
-    private UserRepository<Entity,ID> userRepository;
+
+    //private UserRepository<Entity,ID> userRepository;
 
     @Override
     public boolean isUserExist(ID userId) {
