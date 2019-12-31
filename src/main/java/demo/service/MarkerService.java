@@ -12,8 +12,8 @@ import java.util.Optional;
  *
  * @author Kalana Shalitha
  */
-public interface MarkerService<Entity extends Marker, ID extends String> {
-    Optional<Marker> getMarker(ID id);
+public interface MarkerService{
+    Optional<Marker> getMarker(String id);
     void saveMarker(Marker marker);
     Optional<List<Marker>> getAllMarkers();
 }

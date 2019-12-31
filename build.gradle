@@ -52,6 +52,11 @@ processResources {
         into 'public'
     }
 }
+def profiles = 'prod'
 
-bootRun.dependsOn(buildFrontend)
+buildFrontend.finalizedBy bootRun{
+	args = ["--spring.profiles.active=" + profiles]
+}
+
+//bootRun.dependsOn(buildFrontend)
 

@@ -1,6 +1,9 @@
 package demo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
+
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -11,6 +14,7 @@ public class User {
     @Id
     private String id;
     private String firstName;
+    @Indexed(unique=true)
     private String email;
 
 

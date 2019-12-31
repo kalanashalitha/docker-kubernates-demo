@@ -2,38 +2,35 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- */
+ *//*
+
 package demo.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
 import demo.model.User;
-//import demo.repo.Repository;
+import demo.repo.Repository;
 import demo.repo.UserRepository;
 import demo.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+*/
 /**
  *
  * @author Kalana Shalitha
- */
+ *//*
+
 @Service
 @Transactional
-public class BaseServiceImpl<Entity extends User, ID extends String> implements BaseService<Entity, ID> {
+public class BaseServiceImpl<Entity,ID> implements BaseService<Entity, ID> {
 
-    public BaseServiceImpl(UserRepository<Entity, ID> repository) {
-        this.repository = repository;
-    }
-    public BaseServiceImpl() {
-    }
-
-    //private Repository<Entity,ID> repository;
     @Autowired
-    private UserRepository<Entity,ID> repository;
-    
+    private Repository repository;
+
     @Override
     public Optional<Entity> getEntity(ID id) {
         System.out.println("gggggggggggg"+id);
@@ -44,7 +41,7 @@ public class BaseServiceImpl<Entity extends User, ID extends String> implements 
 
     @Override
     public Entity createEntity(Entity entity) {
-        return repository.save(entity);
+        return null;//return repository.save(entity);
     }
 
     @Override
@@ -74,3 +71,4 @@ public class BaseServiceImpl<Entity extends User, ID extends String> implements 
     }
     
 }
+*/

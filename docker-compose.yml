@@ -1,9 +1,15 @@
 version: '3'
 services:
-  redis-server:
-    image: 'redis'
+  mongo-server:
+    image: 'mongo'
+    ports:
+      - "27018:27017"
   java-app:
     restart: 'on-failure'
-    build: .
+    build:
+      context: .
+      dockerfile: prod.dockerfile
     ports:
       - "8080:8080"
+    environment:
+      - MONGO_URL=mongo-server/mapap

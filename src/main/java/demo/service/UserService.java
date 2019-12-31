@@ -3,10 +3,12 @@ package demo.service;
 
 import demo.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface UserService<Entityy extends User, ID extends String>{
-    boolean isUserExist(ID userId);
-    Optional<User> getUser(ID userId);
-    User createUser(Entityy user);
+public interface UserService{
+    boolean isUserExist(String userId);
+    Optional<User> getUser(String userId);
+    User createUser(User user);
+    List<User> createUsers(List<User> users) throws Exception;
 }

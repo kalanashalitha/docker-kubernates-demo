@@ -6,20 +6,26 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.sun.tools.sjavac.Log;
+import demo.DuplicateEmailException;
 import demo.model.User;
 import demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,14 +33,40 @@ import java.util.Optional;
  */
 
 @RequestMapping("api/user")
-@Controller
+@RestController
 public class UserController {
 
     private static final HttpTransport httpTransport = new NetHttpTransport();
     private static final JsonFactory jsonFactory = new JacksonFactory();
-    @Autowired
+
     private UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value ="/create")
+    public List<User> createUser() {
+        System.out.println("hit");
+        User user1 = new User();
+        user1.setEmail("fuck@fuck11.com");
+        user1.setFirstName("kalana");
+        //user1.setId("1");
+
+        User user2 = new User();
+        user2.setEmail("fuck@fuck.com");
+        user2.setFirstName("shalitha");
+        //user2.setId("1");
+        List<User> users = new ArrayList(){{add(user1);add(user2);}};
+        try{
+            List<User> createdUsers = userService.createUsers(users);
+            return createdUsers;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new DuplicateEmailException("email is duplicated");
+        }
+    }
     @RequestMapping(method = RequestMethod.POST,value ="/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody String idToken) throws GeneralSecurityException, IOException {
         System.out.println("aaaaaaaaaaaaaaaaaaaa"+idToken);
