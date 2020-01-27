@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.2.0.RELEASE'
@@ -52,11 +52,14 @@ processResources {
         into 'public'
     }
 }
-def profiles = 'prod'
+def profiles = 'dev'
 
-buildFrontend.finalizedBy bootRun{
+/*buildFrontend.finalizedBy bootRun{
 	args = ["--spring.profiles.active=" + profiles]
-}
+}*/
 
-//bootRun.dependsOn(buildFrontend)
+bootRun{
+	args = ["--spring.profiles.active=" + profiles]
+	dependsOn(buildFrontend)
+}
 

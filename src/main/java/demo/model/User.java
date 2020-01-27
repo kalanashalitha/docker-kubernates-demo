@@ -1,6 +1,5 @@
 package demo.model;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -10,21 +9,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by Kalana Shalitha on 10/22/2017.
  */
 @Document
-public class User {
+public class User{
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public enum Role {
+        ADMIN,USER
+    }
     @Id
     private String id;
     private String firstName;
     @Indexed(unique=true)
     private String email;
+    private Role role;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
-
         User user = (User) o;
-
         return getId().equals(user.getId());
     }
 

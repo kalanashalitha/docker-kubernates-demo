@@ -15,7 +15,7 @@ public class LoginController {
         System.out.println("login controller called");
         return "login.html";
     }
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET, value = "/home")
     public String getHome(){
         System.out.println("home called");
         return "index.html";

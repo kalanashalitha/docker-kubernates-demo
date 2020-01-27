@@ -12,4 +12,4 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - MONGO_URL=mongo-server/mapap
+      - MONGO_URL=mongo-server:27017/mapap

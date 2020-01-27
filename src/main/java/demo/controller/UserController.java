@@ -14,27 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Kalana Shalitha on 10/22/2017.
  */
 
 @RequestMapping("api/user")
-@RestController
-public class UserController {
+@Controller
+public class UserController{
 
     private static final HttpTransport httpTransport = new NetHttpTransport();
     private static final JsonFactory jsonFactory = new JacksonFactory();
@@ -67,7 +61,7 @@ public class UserController {
             throw new DuplicateEmailException("email is duplicated");
         }
     }
-    @RequestMapping(method = RequestMethod.POST,value ="/authenticate")
+    @RequestMapping(method = RequestMethod.POST,value = "/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody String idToken) throws GeneralSecurityException, IOException {
         System.out.println("aaaaaaaaaaaaaaaaaaaa"+idToken);
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
@@ -109,6 +103,7 @@ public class UserController {
                 user.setEmail(email);
                 user.setFirstName(name);
                 user.setId(userId);
+                user.setRole(User.Role.ADMIN);
                 User createdUser = userService.createUser(user);
                 URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path(userId)
