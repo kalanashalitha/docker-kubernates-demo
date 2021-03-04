@@ -7,6 +7,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import demo.DuplicateEmailException;
+import demo.dto.UserResponseDto;
 import demo.model.User;
 import demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ import java.util.*;
  * Created by Kalana Shalitha on 10/22/2017.
  */
 
-@RequestMapping("api/user")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/user")
 @Controller
 public class UserController{
 
@@ -39,8 +41,18 @@ public class UserController{
         this.userService = userService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,value ="/create")
-    public List<User> createUser() {
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(@RequestBody User user) {
+        return ResponseEntity.ok(userService.login(user));
+    }
+
+    /*@RequestMapping(method = RequestMethod.GET,value ="/create")
+    public List<User> createUsers() {
         System.out.println("hit");
         User user1 = new User();
         user1.setEmail("fuck@fuck11.com");
@@ -113,5 +125,5 @@ public class UserController{
             System.out.println("Invalid ID token.");
             return ResponseEntity.badRequest().build();
         }
-    }
+    }*/
 }

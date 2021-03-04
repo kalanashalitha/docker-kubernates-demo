@@ -1,6 +1,7 @@
 package demo.service.impl;
 
 import demo.DuplicateEmailException;
+import demo.dto.UserResponseDto;
 import demo.model.User;
 import demo.repo.UserRepository;
 import demo.service.BaseService;
@@ -38,6 +39,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserResponseDto login(User user) {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        Optional<User> byName = userRepository.findByName(user.getName());
+        if(!byName.isPresent()) return null;
+        byName.ifPresent(userPresent -> {
+            if(user.getPassword().equals(userPresent.getPassword())){
+                userResponseDto.setUserId(userPresent.getId());
+                userResponseDto.setName(userPresent.getName());
+            }
+        });
+        return userResponseDto;
     }
 
     @Override //@Transactional
