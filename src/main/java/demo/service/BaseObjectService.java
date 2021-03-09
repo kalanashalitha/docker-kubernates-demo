@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Created by Kalana Shalitha on 8/19/2017.
  */
-public interface BaseObjectService extends Service{
+public interface BaseObjectService {
     Optional<Object> getEntity(Object id);
     void createEntity(Object entity);
     void modifyEntity(Object entity);

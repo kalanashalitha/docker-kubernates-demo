@@ -1,14 +1,11 @@
 package demo.service.impl;
 
-import demo.DuplicateEmailException;
 import demo.dto.UserResponseDto;
 import demo.model.User;
 import demo.repo.UserRepository;
-import demo.service.BaseService;
 import demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

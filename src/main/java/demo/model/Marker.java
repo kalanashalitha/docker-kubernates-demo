@@ -11,17 +11,53 @@ import javax.persistence.Id;
 @Document
 public class Marker {
     @Id
-    private int id;
-    private double lat;
-    private double lng;
+    private String id;
+    private Position position;
     private String name;
-    private boolean draggable;
+    private String userId;
 
-    public double getId() {
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    static class Position {
+        private double lat;
+        private double lng;
+
+        public double getLat() {
+            return lat;
+        }
+
+        public void setLat(double lat) {
+            this.lat = lat;
+        }
+
+        public double getLng() {
+            return lng;
+        }
+
+        public void setLng(double lng) {
+            this.lng = lng;
+        }
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -31,40 +67,5 @@ public class Marker {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Marker{" +
-                "id=" + id +
-                ", lat='" + getLat() + '\'' +
-                ", lng='" + getLng() + '\'' +
-                ", name='" + name + '\'' +
-                ", draggable=" + draggable +
-                '}';
-    }
-
-    public boolean isDraggable() {
-        return draggable;
-    }
-
-    public void setDraggable(boolean draggable) {
-        this.draggable = draggable;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
     }
 }

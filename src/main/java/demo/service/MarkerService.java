@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package demo.service;
+import demo.dto.MarkersDTO;
 import demo.model.Marker;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,5 @@ import java.util.Optional;
  * @author Kalana Shalitha
  */
 public interface MarkerService{
-    Optional<Marker> getMarker(String id);
-    void saveMarker(Marker marker);
-    Optional<List<Marker>> getAllMarkers();
+    void saveMarkers(MarkersDTO markersDTO);
 }
