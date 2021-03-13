@@ -39,6 +39,7 @@ export class MapContainer extends Component {
         ]
       };
     });
+    this.props.updateMarkers(this.state.markers)
   }
 
   render() {

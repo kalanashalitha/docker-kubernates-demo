@@ -31,7 +31,7 @@ class LoginForm extends Component {
         axios.post(`http://localhost:8080/api/user/login`, user)
             .then((res) => {
                 console.log(res);
-                console.log(res.data);
+                this.props.setLoggedInUser(res.data)
             }, (error) => {
                 console.log(error);
             });
