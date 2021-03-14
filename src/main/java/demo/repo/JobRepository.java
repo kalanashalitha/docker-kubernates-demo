@@ -5,11 +5,10 @@
  */
 
 package demo.repo;
-import demo.model.Marker;
+import demo.model.Job;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -17,6 +16,7 @@ import java.util.Optional;
  * @author Kalana Shalitha
  */
 
-public interface MarkerRepository extends MongoRepository<Marker, String>{
+public interface JobRepository extends MongoRepository<Job, String>{
+    List<Job> findByUserId(String userId);
 }
 

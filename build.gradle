@@ -24,10 +24,10 @@ dependencies {
 	compile 'com.google.apis:google-api-services-oauth2:v1-rev155-1.25.0'
 	// https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
 	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.5.0'
-	// https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-	compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 	// https://mvnrepository.com/artifact/com.twitter/hbc-core
 	compile group: 'com.twitter', name: 'hbc-core', version: '2.2.0'
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -65,6 +65,6 @@ def profiles = 'dev'
 
 bootRun{
 	args = ["--spring.profiles.active=" + profiles]
-	dependsOn(buildFrontend)
+	//dependsOn(buildFrontend)
 }
 

@@ -38,14 +38,11 @@ public class MarkerServiceImpl implements MarkerService{
         LOGGER.setLevel(Level.INFO);
         List<Marker> markers = markersDTO.getMarkers();
         markers.forEach(marker -> {
-            marker.setUserId(markersDTO.getUserId());
             if(null == marker.getId()) {
-                marker.setUserId(markersDTO.getUserId());
                 markerRepository.save(marker);
             } else {
                 Optional<Marker> byId = markerRepository.findById(marker.getId());
                 byId.ifPresent(byIdMarker -> {
-                    byIdMarker.setName(marker.getName());
                     markerRepository.save(byIdMarker);
                 });
             }
