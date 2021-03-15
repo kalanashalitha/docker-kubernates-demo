@@ -12,9 +12,13 @@ class App extends Component {
     super(props)
     this.state = {
       username: "",
-      userId: "",
-      markers: []
+      userId: ""
     }
+  }
+  componentDidMount(prevProps) {
+    console.log("aa")
+    // Typical usage (don't forget to compare props):
+    this.loadJobs()
   }
   setLoggedInUser = (userData) => {
     this.setState({
@@ -28,17 +32,13 @@ class App extends Component {
       markers: markers
     });
   }
-  saveMarkers = event => {
-    event.preventDefault();
-    const markersDTO = {
-      userId: this.state.userId,
-      markers: this.state.markers
-    };
-    console.log(JSON.stringify(markersDTO))
-    console.log(this.state.userId)
-    axios.post(`http://localhost:8080/api/marker/save-markers`, markersDTO)
+  loadJobs() {
+    axios.get(`http://localhost:8080/api/job/all-jobs`)
       .then((res) => {
-        console.log(res);
+        console.log(JSON.stringify(res));
+        this.setState({
+          jobs: res.data
+        });
       }, (error) => {
         console.log(error);
       });
@@ -59,8 +59,7 @@ class App extends Component {
             <Jobs userId={this.state.userId} />
           </Route>
           <Route path="/map">
-            <button onClick={this.saveMarkers}> Save Markers </button> <br />
-            <MapContainer updateMarkers={this.updateMarkers} />
+            <MapContainer userId={this.state.userId} jobs={this.state.jobs} />
           </Route>
           <Route path="/">
             <RegisterForm email="kalana@gmail.com" /> <br />

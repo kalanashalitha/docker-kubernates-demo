@@ -1,5 +1,6 @@
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import React, { Component } from 'react';
+import axios from 'axios';
 
 const mapStyles = {
   width: '100%',
@@ -11,63 +12,98 @@ export class MapContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [
-        {
-          title: "The marker`s title will appear as a tooltip.",
-          name: "SOMA",
-          position: { lat: 37.778519, lng: -122.40564 }
-        }
-      ]
-    };
+      jobs: props.jobs,
+      showingInfoWindow: false,
+      activeMarker: [],
+      selectedPlace: [],
+    }
+  }
+
+  componentDidMount(prevProps) {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick(t, map, coord) {
+  onClick = (t, map, coord) => {
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
-
     this.setState(previousState => {
       return {
-        markers: [
-          ...previousState.markers,
+        jobs: [
+          ...previousState.jobs,
           {
-            title: "",
-            name: "",
-            position: { lat, lng }
+            title: "new plumbing job",
+            description: "desc",
+            userId: this.props.userId,
+            marker: {
+              title: "kalana",
+              name: "shalitha",
+              position: { lat, lng }
+            }
           }
         ]
       };
     });
-    this.props.updateMarkers(this.state.markers)
   }
+
+  saveJobs = event => {
+    event.preventDefault();
+    console.log(JSON.stringify(this.state.jobs))
+    axios.post(`http://localhost:8080/api/job/save-jobs`, this.state.jobs)
+      .then((res) => {
+        console.log(res);
+      }, (error) => {
+        console.log(error);
+      });
+  }
+
+  onMarkerClick = (props, marker, e) => {
+    console.log("aaa"+JSON.stringify(props.title))
+    this.setState({
+      selectedPlace: props.title,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
+  }
+
+  // onMapClicked = (props) => {
+  //   if (this.state.showingInfoWindow) {
+  //     this.setState({
+  //       showingInfoWindow: false,
+  //       activeMarker: null
+  //     })
+  //   }
+  // };
 
   render() {
     return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        style={mapStyles}
-        onClick={this.onClick}
-      >
-        {this.state.markers.map((marker, index) => (
-          <Marker
-            key={index}
-            title={marker.title}
-            name={marker.name}
-            position={marker.position}
-          />
-        ))}
-        {/* <InfoWindow
+      <div>
+        <button onClick={this.saveJobs}> Save Jobs </button> <br />
+        <Map
+          google={this.props.google}
+          zoom={14}
+          style={mapStyles}
+          onClick={this.onClick}
+        >
+          {this.state.jobs.map((job, index) => (
+            <Marker
+              key={index}
+              title={job.title}
+              name={job.marker.name}
+              position={job.marker.position}
+              onClick={this.onMarkerClick}
+            />
+          ))}
+          {this.state.activeMarker !== []? <InfoWindow
             marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            onClose={this.onClose}
-          >
+            visible={this.state.showingInfoWindow}>
             <div>
-              <h4>{this.state.selectedPlace.name}</h4>
+              <h1>{this.state.selectedPlace}</h1>
             </div>
-          </InfoWindow> */}
-      </Map>
+          </InfoWindow>: null }
+          
+        </Map>
+      </div>
     );
   }
 }
