@@ -9,6 +9,7 @@ package demo.controller;
 import demo.model.Job;
 import demo.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +28,15 @@ public class JobController {
     private JobService jobService;
 
     @PostMapping(value = "/api/job/save-jobs")
-    public void saveJobs(@RequestBody List<Job> jobs) {
+    public ResponseEntity saveJobs(@RequestBody List<Job> jobs) {
         System.out.println("controller called"+ jobs.toString());
         jobService.saveJobs(jobs);
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping(value = "/api/job/all-jobs")
-    public List<Job> getAllJobs() {
-        return jobService.getAllActiveJobs();
+    public ResponseEntity<List<Job>> getAllJobs() {
+        return ResponseEntity.ok(jobService.getAllActiveJobs());
     }
 
 }

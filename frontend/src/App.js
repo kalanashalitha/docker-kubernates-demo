@@ -1,74 +1,64 @@
-import RegisterForm from './components/register_form';
-import MapContainer from './components/map';
-import LoginForm from './components/login_form';
-import Jobs from './components/jobs';
 import './App.css';
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Layout from './components/Layout';
+import Login from './pages/Login';
+import Jobs from './pages/Jobs';
+import Signup from './pages/Signup';
+import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
+import UserContext from './components/UserContext';
+import Maps from './pages/Maps';
+// import UnProtectedRoute from './components/UnProtectedRoute';
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: "",
-      userId: ""
+const App = () => {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    try {
+      const userInfo = JSON.parse(window.localStorage.getItem('user'));
+      if (userInfo.name) {
+        setUser(userInfo);
+      }
+    } catch {
+      setUser({});
     }
-  }
-  componentDidMount(prevProps) {
-    console.log("aa")
-    // Typical usage (don't forget to compare props):
-    this.loadJobs()
-  }
-  setLoggedInUser = (userData) => {
-    this.setState({
-      userId: userData.userId,
-      username: userData.name
-    });
-  }
-  updateMarkers = (markers) => {
-    this.setState({
-      userId: this.props.userId,
-      markers: markers
-    });
-  }
-  loadJobs() {
-    axios.get(`http://localhost:8080/api/job/all-jobs`)
-      .then((res) => {
-        console.log(JSON.stringify(res));
-        this.setState({
-          jobs: res.data
-        });
-      }, (error) => {
-        console.log(error);
-      });
-  }
-  render() {
-    return <div className="App">
-      <b>{this.state.username} is logged in.</b> <br />
+  }, []);
+
+  return(
+    <div className="App">
       <BrowserRouter>
-        <nav>
-          <ul>
-            <li><Link to="/login">Login And Register</Link></li>
-            <li><Link to="/map">Map</Link></li>
-            <li><Link to="/jobs">Jobs</Link></li>
-          </ul>
-        </nav>
-        <Switch>
-          <Route path="/jobs">
-            <Jobs userId={this.state.userId} />
-          </Route>
-          <Route path="/map">
-            <MapContainer userId={this.state.userId} jobs={this.state.jobs} />
-          </Route>
-          <Route path="/">
-            <RegisterForm email="kalana@gmail.com" /> <br />
-            <LoginForm setLoggedInUser={this.setLoggedInUser} /> <br />
-          </Route>
-        </Switch>
+        <UserContext.Provider value={{ user, setUser }}>
+          <Layout>
+            <Switch>
+                
+              <Route path="/login" exact>
+                <Login/>
+              </Route>
+
+              <Route path="/signup">
+                <Signup />
+              </Route>
+              
+              <ProtectedRoute>
+                <Route path="/" exact>
+                  <Home/>
+                </Route>
+
+                <Route path="/jobs">
+                  <Jobs/>
+                </Route>
+
+                <Route path="/map">
+                  <Maps />
+                </Route>
+              </ProtectedRoute>
+            </Switch>
+          </Layout>
+        </UserContext.Provider>
       </BrowserRouter>
     </div>
-  }
-}
+    );
+};
 
 export default App;
