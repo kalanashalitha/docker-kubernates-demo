@@ -41,12 +41,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto login(User user) {
         UserResponseDto userResponseDto = new UserResponseDto();
-        Optional<User> byName = userRepository.findByName(user.getName());
-        if(!byName.isPresent()) return null;
-        byName.ifPresent(userPresent -> {
+        Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
+        if(!byEmail.isPresent()) return null;
+        byEmail.ifPresent(userPresent -> {
             if(user.getPassword().equals(userPresent.getPassword())){
                 userResponseDto.setUserId(userPresent.getId());
                 userResponseDto.setName(userPresent.getName());
+                userResponseDto.setEmail(userPresent.getEmail());
             }
         });
         return userResponseDto;
