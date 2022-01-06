@@ -2,6 +2,7 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import EditMarker from '../components/edit_marker';
 
 const mapStyles = {
   width: '100%',
@@ -13,6 +14,8 @@ const Maps = (props) => {
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
   const [activeMarker, setActiveMarker] = useState({});
   const [selectedPlace, setSelectedPlace] = useState([]);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   const onClick = (t, map, coord) => {
     const { latLng } = coord;
@@ -20,18 +23,18 @@ const Maps = (props) => {
     const lng = latLng.lng();
     setJobs((previousState) => {
       return [
-          ...previousState,
-          {
-            title: 'new plumbing job',
-            description: 'desc',
-            userId: props.userId,
-            marker: {
-              title: 'kalana',
-              name: 'shalitha',
-              position: { lat, lng },
-            },
+        ...previousState,
+        {
+          title: 'new plumbing job',
+          description: 'desc',
+          userId: props.userId,
+          marker: {
+            title: 'kalana',
+            name: 'shalitha',
+            position: { lat, lng },
           },
-        ];
+        },
+      ];
     });
   };
 
@@ -45,11 +48,22 @@ const Maps = (props) => {
     }
   };
 
-  const onMarkerClick = ({ title }, marker) => {
-    setSelectedPlace(title);
+  const onMarkerClick = (props, marker) => {
+    console.log("selected marker", marker);
+    console.log("this.jobs.", jobs);
+    let selectedJob = jobs.find(obj => obj.userId === marker.name);
+    console.log("selected job", selectedJob);
+    setSelectedJob(selectedJob);
+    setSelectedPlace(selectedJob.title);
     setActiveMarker(marker);
     setShowingInfoWindow(true);
+    setShowEditPopup(true);
   };
+
+  // const onJobClick = ({ job }) => {
+  //   console.log("selected job", job);
+
+  // };
 
   const loadJobs = async () => {
     try {
@@ -64,17 +78,20 @@ const Maps = (props) => {
     loadJobs();
   }, []);
 
-  return ( 
+  return (
     <>
+      <EditMarker isOpen={showEditPopup} setOpen={() => setShowEditPopup(false)} selectedJob={selectedJob}/>
       <h2>Click on the map to add a new job</h2>
       <Button onClick={saveJobs}> Save Jobs </Button> <br />
-      <div 
-        style={{ height: 350, 
-        width: '100%', 
-        display: 'flex', 
-        flexFlow: 'row nowrap', 
-        justifyContent: 'center', 
-        padding: 0 }}
+      <div
+        style={{
+          height: 350,
+          width: '100%',
+          display: 'flex',
+          flexFlow: 'row nowrap',
+          justifyContent: 'center',
+          padding: 0
+        }}
         className="mt-3"
       >
         <Map
@@ -88,15 +105,15 @@ const Maps = (props) => {
           }}
         >
           {jobs.length > 0 &&
-            jobs.map((job, index) => (
+            jobs.map((job => (
               <Marker
-                key={index}
+                key={job.userId}
                 title={job.title}
-                name={job.marker.name}
+                name={job.userId}
                 position={job.marker.position}
                 onClick={onMarkerClick}
               />
-            ))}
+            )))}
           {activeMarker ? (
             <InfoWindow
               marker={activeMarker}
@@ -110,9 +127,11 @@ const Maps = (props) => {
         </Map>
       </div>
     </>
-   );
+  );
 };
- 
+
+//render(<Example />);
+
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyBfwyysUDXs-L80ctr-unjO4u8jUXHJwu4',
 })(Maps);
