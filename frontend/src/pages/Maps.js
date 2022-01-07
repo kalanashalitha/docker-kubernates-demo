@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import EditMarker from '../components/edit_marker';
+//import _uniqueId from 'lodash/uniqueId';
 
 const mapStyles = {
   width: '100%',
@@ -16,6 +17,7 @@ const Maps = (props) => {
   const [selectedPlace, setSelectedPlace] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  //const [id] = useState(_uniqueId('prefix-'));
 
   const onClick = (t, map, coord) => {
     const { latLng } = coord;
@@ -105,15 +107,15 @@ const Maps = (props) => {
           }}
         >
           {jobs.length > 0 &&
-            jobs.map((job => (
+            jobs.map((job) => (
               <Marker
-                key={job.userId}
+                key={job.id}
                 title={job.title}
                 name={job.userId}
                 position={job.marker.position}
                 onClick={onMarkerClick}
               />
-            )))}
+            ))}
           {activeMarker ? (
             <InfoWindow
               marker={activeMarker}
