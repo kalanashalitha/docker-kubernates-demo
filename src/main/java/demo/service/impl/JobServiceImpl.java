@@ -33,6 +33,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Job saveJob(Job job) {
+        return jobRepository.save(job);
+    }
+
+    @Override
     public List<Job> getJobsByUserId(String userId) {
         return null;
     }

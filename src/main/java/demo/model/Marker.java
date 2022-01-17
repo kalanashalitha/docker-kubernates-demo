@@ -15,6 +15,7 @@ public class Marker {
     private String id;
     private Position position;
     private String title;
+    private String name;
     @Setter@Getter
     static class Position {
         private double lat;

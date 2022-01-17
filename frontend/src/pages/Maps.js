@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import EditMarker from '../components/edit_marker';
+import UserContext from '../components/UserContext';
+import { useContext } from 'react';
 //import _uniqueId from 'lodash/uniqueId';
 
 const mapStyles = {
@@ -11,6 +13,9 @@ const mapStyles = {
 };
 
 const Maps = (props) => {
+  
+  const { user } = useContext(UserContext);
+  console.log("user", user);
   const [jobs, setJobs] = useState([]);
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
   const [activeMarker, setActiveMarker] = useState({});
@@ -20,6 +25,7 @@ const Maps = (props) => {
   //const [id] = useState(_uniqueId('prefix-'));
 
   const onClick = (t, map, coord) => {
+    console.log("user id", user.userId);
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
@@ -27,9 +33,10 @@ const Maps = (props) => {
       return [
         ...previousState,
         {
+          id: null,
           title: 'new plumbing job',
           description: 'desc',
-          userId: props.userId,
+          userId: user.userId,
           marker: {
             title: 'kalana',
             name: 'shalitha',
@@ -53,13 +60,13 @@ const Maps = (props) => {
   const onMarkerClick = (props, marker) => {
     console.log("selected marker", marker);
     console.log("this.jobs.", jobs);
-    let selectedJob = jobs.find(obj => obj.userId === marker.name);
+    let selectedJob = jobs.find(obj => obj.id === marker.name);
     console.log("selected job", selectedJob);
     setSelectedJob(selectedJob);
     setSelectedPlace(selectedJob.title);
     setActiveMarker(marker);
     setShowingInfoWindow(true);
-    setShowEditPopup(true);
+    
   };
 
   // const onJobClick = ({ job }) => {
@@ -82,9 +89,9 @@ const Maps = (props) => {
 
   return (
     <>
-      <EditMarker isOpen={showEditPopup} setOpen={() => setShowEditPopup(false)} selectedJob={selectedJob}/>
-      <h2>Click on the map to add a new job</h2>
-      <Button onClick={saveJobs}> Save Jobs </Button> <br />
+      <EditMarker isOpen={showEditPopup} setOpen={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
+      <h2>Click on the map to add a new vehicle listing</h2>
+      <Button onClick={saveJobs}> Save Jobs </Button> &nbsp; <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button> <br />
       <div
         style={{
           height: 350,
@@ -109,9 +116,9 @@ const Maps = (props) => {
           {jobs.length > 0 &&
             jobs.map((job) => (
               <Marker
-                key={job.id}
+                key={null}
                 title={job.title}
-                name={job.userId}
+                name={job.id}
                 position={job.marker.position}
                 onClick={onMarkerClick}
               />

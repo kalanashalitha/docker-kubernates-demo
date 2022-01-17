@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface JobService {
     void saveJobs(List<Job> job);
+    Job saveJob(Job job);
     List<Job> getJobsByUserId (String userId);
     List<Job> getAllActiveJobs();
 }
