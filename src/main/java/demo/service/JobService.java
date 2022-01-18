@@ -17,4 +17,5 @@ public interface JobService {
     Job saveJob(Job job);
     List<Job> getJobsByUserId (String userId);
     List<Job> getAllActiveJobs();
+    void deleteJob(Job job);
 }

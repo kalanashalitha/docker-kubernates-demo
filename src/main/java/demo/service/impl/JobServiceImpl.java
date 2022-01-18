@@ -38,6 +38,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public void deleteJob(Job job) {
+        jobRepository.delete(job);
+    }
+
+    @Override
     public List<Job> getJobsByUserId(String userId) {
         return null;
     }

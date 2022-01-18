@@ -89,7 +89,7 @@ const Maps = (props) => {
 
   return (
     <>
-      <EditMarker isOpen={showEditPopup} setOpen={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
+      <EditMarker loadJobs={loadJobs} isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace}/>
       <h2>Click on the map to add a new vehicle listing</h2>
       <Button onClick={saveJobs}> Save Jobs </Button> &nbsp; <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button> <br />
       <div

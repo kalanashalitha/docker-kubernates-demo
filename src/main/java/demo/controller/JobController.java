@@ -45,6 +45,17 @@ public class JobController {
         }
     }
 
+    @DeleteMapping(value = "/api/job/delete-job")
+    public ResponseEntity deleteJob(@RequestBody Job job) {
+        System.out.println("controller called"+ job.toString());
+        if(null != job.getId()) {
+            jobService.deleteJob(job);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping(value = "/api/job/all-jobs")
     public ResponseEntity<List<Job>> getAllJobs() {
         return ResponseEntity.ok(jobService.getAllActiveJobs());

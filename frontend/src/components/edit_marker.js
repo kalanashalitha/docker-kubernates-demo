@@ -5,16 +5,12 @@ import axios from 'axios';
 //import FormControl from 'react-bootstrap/Form'
 //import { useState } from 'react';
 
-const EditMarker = ({ isOpen, setOpen, selectedJob, setSelectedJob }) => {
-    console.log("isOpen", isOpen);
-    //const [show, setShow] = useState(false);
-    //const handleShow = () => setShow(true);
+const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, setSelectedPlace }) => {
+
     const [title, setTitle] = useState(selectedJob?.title);
-    console.log("selectedJob", selectedJob);
 
     const handleChange = (e) => {
       const title = e.target.value;
-      console.log("title", title);
       setTitle(title);
       let save = {
         id: selectedJob.id,
@@ -26,12 +22,33 @@ const EditMarker = ({ isOpen, setOpen, selectedJob, setSelectedJob }) => {
       setSelectedJob(save);
     };
 
+    const hideModel = () => {
+      setHide();
+    };
+
     const save = async () => {
-      console.log("selectedJob", selectedJob);
       try {
         console.log("selectedJob", selectedJob);
         const response = await axios.put('http://localhost:8080/api/job/save-job', selectedJob);
         console.log(response);
+        if(201 == response.status || 204 == response.status) {
+          setSelectedPlace(selectedJob.title);
+          hideModel();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const deleteJob = async () => {
+      try {
+        console.log("selectedJob", selectedJob);
+        const response = await axios.delete('http://localhost:8080/api/job/delete-job', { data: selectedJob } );
+        console.log(response);
+        if(200 == response.status) {
+          hideModel();
+          loadJobs();
+        }
       } catch (error) {
         console.log(error);
       }
@@ -43,7 +60,7 @@ const EditMarker = ({ isOpen, setOpen, selectedJob, setSelectedJob }) => {
   
     return (
       <>
-        <Modal show={isOpen} onHide={setOpen}>
+        <Modal show={isOpen} onHide={hideModel}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Listing</Modal.Title>
           </Modal.Header>
@@ -54,12 +71,13 @@ const EditMarker = ({ isOpen, setOpen, selectedJob, setSelectedJob }) => {
             {/* {selectedJob?selectedJob.title:''} */}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={setOpen}>
+            <Button variant="secondary" onClick={hideModel}>
               Close
             </Button>
             <Button variant="primary" onClick={save}>
-              Save Changes
+              Save Vehicle
             </Button>
+            <Button variant="danger" onClick={deleteJob}>Delete Vehicle</Button>
           </Modal.Footer>
         </Modal>
       </>
