@@ -1,28 +1,16 @@
 package demo.controller;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import demo.DuplicateEmailException;
 import demo.dto.UserResponseDto;
-import demo.model.Job;
 import demo.model.User;
-import demo.service.JobService;
 import demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.io.IOException;
-import java.net.URI;
-import java.security.GeneralSecurityException;
-import java.util.*;
 
 /**
  * Created by Kalana Shalitha on 10/22/2017.

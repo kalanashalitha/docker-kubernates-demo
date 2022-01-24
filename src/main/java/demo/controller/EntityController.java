@@ -6,8 +6,8 @@
 
 package demo.controller;
 
-import demo.model.Job;
-import demo.service.JobService;
+import demo.model.Entity;
+import demo.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,42 +23,42 @@ import java.util.List;
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
-public class JobController {
+public class EntityController {
 
     @Autowired
-    private JobService jobService;
+    private EntityService entityService;
 
-    @PostMapping(value = "/api/job/save-jobs")
-    public ResponseEntity saveJobs(@RequestBody List<Job> jobs) {
+    @PostMapping(value = "/api/job/save-vehicles")
+    public ResponseEntity saveVehicles(@RequestBody List<Entity> jobs) {
         System.out.println("controller called"+ jobs.toString());
-        jobService.saveJobs(jobs);
+        entityService.saveEntities(jobs);
         return ResponseEntity.ok("success");
     }
 
-    @PutMapping(value = "/api/job/save-job")
-    public ResponseEntity saveJob(@RequestBody Job job) {
+    @PutMapping(value = "/api/job/save-vehicle")
+    public ResponseEntity saveVehicle(@RequestBody Entity job) {
         System.out.println("controller called"+ job.toString());
         if(null == job.getId()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(jobService.saveJob(job));
+            return ResponseEntity.status(HttpStatus.CREATED).body(entityService.saveEntity(job));
         } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(jobService.saveJob(job));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(entityService.saveEntity(job));
         }
     }
 
-    @DeleteMapping(value = "/api/job/delete-job")
-    public ResponseEntity deleteJob(@RequestBody Job job) {
+    @DeleteMapping(value = "/api/job/delete-vehicle")
+    public ResponseEntity deleteVehicle(@RequestBody Entity job) {
         System.out.println("controller called"+ job.toString());
         if(null != job.getId()) {
-            jobService.deleteJob(job);
+            entityService.deleteEntity(job);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping(value = "/api/job/all-jobs")
-    public ResponseEntity<List<Job>> getAllJobs() {
-        return ResponseEntity.ok(jobService.getAllActiveJobs());
+    @GetMapping(value = "/api/job/all-vehicles")
+    public ResponseEntity<List<Entity>> getAllVehicles() {
+        return ResponseEntity.ok(entityService.getAllActiveEntities());
     }
 
 }

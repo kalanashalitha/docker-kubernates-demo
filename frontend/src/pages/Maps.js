@@ -13,9 +13,8 @@ const mapStyles = {
 };
 
 const Maps = (props) => {
-  
+
   const { user } = useContext(UserContext);
-  console.log("user", user);
   const [jobs, setJobs] = useState([]);
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
   const [activeMarker, setActiveMarker] = useState({});
@@ -25,7 +24,6 @@ const Maps = (props) => {
   //const [id] = useState(_uniqueId('prefix-'));
 
   const onClick = (t, map, coord) => {
-    console.log("user id", user.userId);
     const { latLng } = coord;
     const lat = latLng.lat();
     const lng = latLng.lng();
@@ -34,12 +32,20 @@ const Maps = (props) => {
         ...previousState,
         {
           id: null,
-          title: 'new plumbing job',
-          description: 'desc',
           userId: user.userId,
+          title: 'new title',
+          description: '',
+          type: 'VEHICLE',
+          vehicleInfo: {
+            brand: '',
+            model: '',
+            year: '',
+            price: '',
+            transmission: ''
+          },
           marker: {
-            title: 'kalana',
-            name: 'shalitha',
+            title: '',
+            name: '',
             position: { lat, lng },
           },
         },
@@ -50,7 +56,7 @@ const Maps = (props) => {
   const saveJobs = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/job/save-jobs', jobs);
+      const response = await axios.post('http://localhost:8080/api/job/save-vehicles', jobs);
       console.log(response.data);
     } catch (error) {
       // error
@@ -58,15 +64,13 @@ const Maps = (props) => {
   };
 
   const onMarkerClick = (props, marker) => {
-    console.log("selected marker", marker);
-    console.log("this.jobs.", jobs);
     let selectedJob = jobs.find(obj => obj.id === marker.name);
     console.log("selected job", selectedJob);
     setSelectedJob(selectedJob);
     setSelectedPlace(selectedJob.title);
     setActiveMarker(marker);
     setShowingInfoWindow(true);
-    
+
   };
 
   // const onJobClick = ({ job }) => {
@@ -76,7 +80,7 @@ const Maps = (props) => {
 
   const loadJobs = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/job/all-jobs');
+      const response = await axios.get('http://localhost:8080/api/job/all-vehicles');
       setJobs(response.data);
     } catch {
       // error
@@ -89,7 +93,7 @@ const Maps = (props) => {
 
   return (
     <>
-      <EditMarker loadJobs={loadJobs} isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace}/>
+      <EditMarker loadJobs={loadJobs} isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace} />
       <h2>Click on the map to add a new vehicle listing</h2>
       <Button onClick={saveJobs}> Save Jobs </Button> &nbsp; <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button> <br />
       <div
