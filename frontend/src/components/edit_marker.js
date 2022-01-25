@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal'
 import { Button, Form } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 //import FormControl from 'react-bootstrap/Form'
 //import { useState } from 'react';
@@ -12,6 +12,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
   const [model, setModel] = useState(selectedJob?.vehicleInfo.model);
   const [year, setYear] = useState(selectedJob?.vehicleInfo.year);
   const [price, setPrice] = useState(selectedJob?.vehicleInfo.price);
+  const inputRef = useRef(null);
 
   // const handleChange = (e) => {
   //   const title = e.target.value;
@@ -61,7 +62,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
       marker: selectedJob.marker,
       type: selectedJob.type
     };
-    console.log("save", save);
+    console.log("inputRef", inputRef.current?.click());
     setSelectedJob(save);
     saveCall(save);
   };
@@ -78,6 +79,23 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImage = async (e) => {
+    const base64 = await convertToBase64(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -120,7 +138,18 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
               <Form.Label>Price</Form.Label>
               <Form.Control value={price} onChange={(e) => setPrice(e.target.value)} type="text" placeholder="" />
             </Form.Group>
-
+            <Form.Group className="mb-3" controlId="pic">
+              <Form.Label>Choose file:</Form.Label>
+              <Form.Control ref={inputRef} onChange={handleImage} type="file" placeholder="" /> &nbsp;
+              {/* <Button onClick={handleUpload} variant="outline-primary">Upload</Button> */}
+            </Form.Group>
+            {/* <div className="m-3">
+              <label className="mx-3">Choose file: </label>
+              <input ref={inputRef} className="d-none" type="file" />
+              <button onClick={handleUpload} className="btn btn-outline-primary">
+                Upload
+              </button>
+            </div> */}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit" >

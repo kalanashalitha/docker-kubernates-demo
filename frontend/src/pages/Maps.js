@@ -21,6 +21,7 @@ const Maps = (props) => {
   const [selectedPlace, setSelectedPlace] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [userOwn, setUserOwn] = useState(false);
   //const [id] = useState(_uniqueId('prefix-'));
 
   const onClick = (t, map, coord) => {
@@ -53,7 +54,7 @@ const Maps = (props) => {
     });
   };
 
-  const saveJobs = async (event) => {
+  /*const saveJobs = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:8080/api/job/save-vehicles', jobs);
@@ -61,7 +62,7 @@ const Maps = (props) => {
     } catch (error) {
       // error
     }
-  };
+  };*/
 
   const onMarkerClick = (props, marker) => {
     let selectedJob = jobs.find(obj => obj.id === marker.name);
@@ -70,7 +71,14 @@ const Maps = (props) => {
     setSelectedPlace(selectedJob.title);
     setActiveMarker(marker);
     setShowingInfoWindow(true);
-
+    if(user.userId === selectedJob.userId) {
+      console.log("user own1", userOwn);
+      setUserOwn(true);
+    } else {
+      console.log("user own2", userOwn);
+      setUserOwn(false);
+    }
+    console.log("user own", userOwn);
   };
 
   // const onJobClick = ({ job }) => {
@@ -95,7 +103,8 @@ const Maps = (props) => {
     <>
       <EditMarker loadJobs={loadJobs} isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace} />
       <h2>Click on the map to add a new vehicle listing</h2>
-      <Button onClick={saveJobs}> Save Jobs </Button> &nbsp; <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button> <br />
+      { userOwn ? <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button>: null }
+      {/* <Button onClick={saveJobs}> Save Jobs </Button> &nbsp;*/} 
       <div
         style={{
           height: 350,
