@@ -2,7 +2,7 @@ import Modal from 'react-bootstrap/Modal'
 import { Button, Form, Image } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { } from 'react-bootstrap';
+import PhotoPreview from './PhotoPreview';
 //import FormControl from 'react-bootstrap/Form'
 //import { useState } from 'react';
 
@@ -14,6 +14,8 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
   const [year, setYear] = useState(selectedJob?.vehicleInfo.year);
   const [price, setPrice] = useState(selectedJob?.vehicleInfo.price);
   const [photoList, setPhotoList] = useState(selectedJob?.photoList ? selectedJob.photoList : []);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewPhoto, setPreviewPhoto] = useState(null);
 
   // const handleChange = (e) => {
   //   const title = e.target.value;
@@ -21,6 +23,10 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
 
   const hideModel = () => {
     setHide();
+  };
+
+  const hidePreview = () => {
+    setShowPreview(false);
   };
 
   const saveCall = async (vehicleToSave) => {
@@ -124,6 +130,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
 
   return (
     <>
+      <PhotoPreview photo={previewPhoto} showPreview={showPreview} hidePreview={hidePreview}/>
       <Modal show={isOpen} onHide={hideModel}>
         <Form onSubmit={saveVehicle}>
           <Modal.Header closeButton>
@@ -175,7 +182,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
                 {photoList ?
                   photoList.map((photo) => (
                     <th key={photo?.base64String}>
-                      <Image style={{ width: '150', height: 'auto' }}
+                      <Image style={{ width: '150', height: 'auto' }} onClick={() => {setShowPreview(true);setPreviewPhoto(photo);console.log("aaaaaaaaaa")}}
                         key={photo?.base64String}
                         src={photo?.base64String}
                         thumbnail
