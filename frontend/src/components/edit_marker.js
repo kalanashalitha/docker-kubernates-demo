@@ -1,7 +1,8 @@
 import Modal from 'react-bootstrap/Modal'
-import { Button, Form } from 'react-bootstrap';
-import { useState, useEffect, useRef } from 'react';
+import { Button, Form, Image } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { } from 'react-bootstrap';
 //import FormControl from 'react-bootstrap/Form'
 //import { useState } from 'react';
 
@@ -12,7 +13,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
   const [model, setModel] = useState(selectedJob?.vehicleInfo.model);
   const [year, setYear] = useState(selectedJob?.vehicleInfo.year);
   const [price, setPrice] = useState(selectedJob?.vehicleInfo.price);
-  const inputRef = useRef(null);
+  const [photoList, setPhotoList] = useState(selectedJob?.photoList ? selectedJob.photoList : []);
 
   // const handleChange = (e) => {
   //   const title = e.target.value;
@@ -60,9 +61,9 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
       description: selectedJob.description,
       userId: selectedJob.userId,
       marker: selectedJob.marker,
-      type: selectedJob.type
+      type: selectedJob.type,
+      photoList: photoList
     };
-    console.log("inputRef", inputRef.current?.click());
     setSelectedJob(save);
     saveCall(save);
   };
@@ -95,7 +96,21 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
   };
 
   const handleImage = async (e) => {
-    const base64 = await convertToBase64(e.target.files[0]);
+    console.log("files", e.target.files);
+    const uploadedPhotoList = [];
+    const filesList = Array.from(e.target.files)
+    for (const file of filesList) {
+      const base64 = await convertToBase64(file);
+      let photo = {
+        base64String: base64,
+        entityId: selectedJob.id
+      }
+      uploadedPhotoList.push(photo);
+    }
+    uploadedPhotoList.forEach(p => {
+      photoList.push(p);
+    });
+    setPhotoList(photoList);
   };
 
   useEffect(() => {
@@ -104,6 +119,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
     setModel(selectedJob?.vehicleInfo.model);
     setYear(selectedJob?.vehicleInfo.year);
     setPrice(selectedJob?.vehicleInfo.price);
+    setPhotoList(selectedJob?.photoList);
   }, [selectedJob]);
 
   return (
@@ -140,7 +156,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
             </Form.Group>
             <Form.Group className="mb-3" controlId="pic">
               <Form.Label>Choose file:</Form.Label>
-              <Form.Control ref={inputRef} onChange={handleImage} type="file" placeholder="" /> &nbsp;
+              <Form.Control onChange={handleImage} type="file" multiple placeholder="" /> &nbsp;
               {/* <Button onClick={handleUpload} variant="outline-primary">Upload</Button> */}
             </Form.Group>
             {/* <div className="m-3">
@@ -150,6 +166,24 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
                 Upload
               </button>
             </div> */}
+            {/* {photoList ? <Image
+              src={photoList[0]?.base64String} style="width:50px;height:50px;"
+              thumbnail
+            /> : null} */}
+            <div className="table-horiz-scroll">
+              <table>
+                {photoList ?
+                  photoList.map((photo) => (
+                    <th key={photo?.base64String}>
+                      <Image style={{ width: '150', height: 'auto' }}
+                        key={photo?.base64String}
+                        src={photo?.base64String}
+                        thumbnail
+                      />
+                    </th>
+                  )) : null}
+              </table>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit" >

@@ -1,14 +1,21 @@
 package demo.service.impl;
 
+import demo.dto.EntityDTO;
 import demo.model.Entity;
+import demo.model.Photo;
 import demo.repo.EntityRepository;
+import demo.repo.PhotoRepository;
 import demo.repo.UserRepository;
 import demo.service.EntityService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class EntityServiceImpl implements EntityService {
@@ -19,6 +26,9 @@ public class EntityServiceImpl implements EntityService {
     private EntityRepository entityRepository;
 
     @Autowired
+    private PhotoRepository photoRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -27,8 +37,15 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public Entity saveEntity(Entity job) {
-        return entityRepository.save(job);
+    public Entity saveEntity(EntityDTO entityDTO) {
+        ModelMapper modelMapper = new ModelMapper();
+        Entity entity = modelMapper.map(entityDTO, Entity.class);
+        entityDTO.getPhotoList().stream().filter(photo -> null == photo.getId()).collect(Collectors.toList()).forEach(photoData -> {
+            Photo photo = modelMapper.map(photoData, Photo.class);
+            photo.setEntityId(entity.getId());
+            photoRepository.save(photo);
+        });
+        return entityRepository.save(entity);
     }
 
     @Override
@@ -42,7 +59,16 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public List<Entity> getAllActiveEntities() {
-       return entityRepository.findAll();
+    public List<EntityDTO> getAllActiveEntities() {
+        List<EntityDTO> entityDTOList = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        List<Entity> all = entityRepository.findAll();
+        all.forEach(entity -> {
+            EntityDTO entityDTO = modelMapper.map(entity, EntityDTO.class);
+            List<Photo> byEntityId = photoRepository.findByEntityId(entity.getId());
+            entityDTO.setPhotoList(byEntityId);
+            entityDTOList.add(entityDTO);
+        });
+        return entityDTOList;
     }
 }

@@ -19,6 +19,10 @@
   color: #61dafb;
 }
 
+.table-horiz-scroll {
+  overflow-x:auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

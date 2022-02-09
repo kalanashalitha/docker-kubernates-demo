@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package demo.service;
+import demo.dto.EntityDTO;
 import demo.model.Entity;
 
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.List;
  */
 public interface EntityService {
     void saveEntities(List<Entity> job);
-    Entity saveEntity(Entity job);
+    Entity saveEntity(EntityDTO job);
     List<Entity> getJobsByUserId (String userId);
-    List<Entity> getAllActiveEntities();
+    List<EntityDTO> getAllActiveEntities();
     void deleteEntity(Entity job);
 }

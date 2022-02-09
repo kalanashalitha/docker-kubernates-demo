@@ -6,6 +6,7 @@
 
 package demo.controller;
 
+import demo.dto.EntityDTO;
 import demo.model.Entity;
 import demo.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,12 @@ public class EntityController {
     }
 
     @PutMapping(value = "/api/job/save-vehicle")
-    public ResponseEntity saveVehicle(@RequestBody Entity job) {
-        System.out.println("controller called"+ job.toString());
-        if(null == job.getId()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(entityService.saveEntity(job));
+    public ResponseEntity saveVehicle(@RequestBody EntityDTO entityDTO) {
+        System.out.println("controller called"+ entityDTO.toString());
+        if(null == entityDTO.getId()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(entityService.saveEntity(entityDTO));
         } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(entityService.saveEntity(job));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(entityService.saveEntity(entityDTO));
         }
     }
 
@@ -57,7 +58,7 @@ public class EntityController {
     }
 
     @GetMapping(value = "/api/job/all-vehicles")
-    public ResponseEntity<List<Entity>> getAllVehicles() {
+    public ResponseEntity<List<EntityDTO>> getAllVehicles() {
         return ResponseEntity.ok(entityService.getAllActiveEntities());
     }
 

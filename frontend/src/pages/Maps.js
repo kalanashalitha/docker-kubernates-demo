@@ -49,6 +49,7 @@ const Maps = (props) => {
             name: '',
             position: { lat, lng },
           },
+          photoList: []
         },
       ];
     });
@@ -72,13 +73,10 @@ const Maps = (props) => {
     setActiveMarker(marker);
     setShowingInfoWindow(true);
     if(user.userId === selectedJob.userId) {
-      console.log("user own1", userOwn);
       setUserOwn(true);
     } else {
-      console.log("user own2", userOwn);
       setUserOwn(false);
     }
-    console.log("user own", userOwn);
   };
 
   // const onJobClick = ({ job }) => {
