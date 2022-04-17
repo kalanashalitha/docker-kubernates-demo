@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './pages/Login';
-import Jobs from './pages/Jobs';
+//import Jobs from './pages/Jobs';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -45,9 +45,9 @@ const App = () => {
                   <Home/>
                 </Route>
 
-                <Route path="/jobs">
+                {/* <Route path="/jobs">
                   <Jobs/>
-                </Route>
+                </Route> */}
 
                 <Route path="/map">
                   <Maps />

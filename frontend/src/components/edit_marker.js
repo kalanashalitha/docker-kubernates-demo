@@ -37,7 +37,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
       const response = await axios.put('http://localhost:8080/api/job/save-vehicle', vehicleToSave);
       console.log(response);
       if (201 == response.status || 204 == response.status) {
-        setSelectedPlace(selectedJob.title);
+        setSelectedJob(vehicleToSave);
         hideModel();
       }
     } catch (error) {
@@ -70,7 +70,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
       type: selectedJob.type,
       photoList: photoList
     };
-    setSelectedJob(save);
+
     saveCall(save);
   };
 
@@ -120,6 +120,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
   };
 
   useEffect(() => {
+    setSelectedPlace(selectedJob?.title);
     setTitle(selectedJob?.title);
     setBrand(selectedJob?.vehicleInfo.brand);
     setModel(selectedJob?.vehicleInfo.model);
@@ -130,7 +131,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
 
   return (
     <>
-      <PhotoPreview photo={previewPhoto} showPreview={showPreview} hidePreview={hidePreview}/>
+      <PhotoPreview photo={previewPhoto} showPreview={showPreview} hidePreview={hidePreview} />
       <Modal show={isOpen} onHide={hideModel}>
         <Form onSubmit={saveVehicle}>
           <Modal.Header closeButton>
@@ -182,7 +183,7 @@ const EditMarker = ({ loadJobs, isOpen, setHide, selectedJob, setSelectedJob, se
                 {photoList ?
                   photoList.map((photo) => (
                     <th key={photo?.base64String}>
-                      <Image style={{ width: '150', height: 'auto' }} onClick={() => {setShowPreview(true);setPreviewPhoto(photo);console.log("aaaaaaaaaa")}}
+                      <Image style={{ width: '150', height: 'auto' }} onClick={() => { setShowPreview(true); setPreviewPhoto(photo); console.log("aaaaaaaaaa") }}
                         key={photo?.base64String}
                         src={photo?.base64String}
                         thumbnail

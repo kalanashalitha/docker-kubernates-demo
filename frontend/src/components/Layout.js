@@ -21,9 +21,9 @@ const Layout = ({ children }) => {
             <LinkContainer to="/">
               <Navbar.Brand>Home</Navbar.Brand>
             </LinkContainer>
-            <LinkContainer to="/jobs">
+            {/* <LinkContainer to="/jobs">
               <Navbar.Brand>Jobs</Navbar.Brand>
-            </LinkContainer>
+            </LinkContainer> */}
             <LinkContainer to="/map">
               <Navbar.Brand>Map</Navbar.Brand>
             </LinkContainer>

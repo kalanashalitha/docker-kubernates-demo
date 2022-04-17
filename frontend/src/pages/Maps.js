@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import EditMarker from '../components/edit_marker';
+import ViewMarker from '../components/view_marker';
 import UserContext from '../components/UserContext';
 import { useContext } from 'react';
 //import _uniqueId from 'lodash/uniqueId';
@@ -20,6 +21,7 @@ const Maps = (props) => {
   const [activeMarker, setActiveMarker] = useState({});
   const [selectedPlace, setSelectedPlace] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
+  const [showViewPopup, setShowViewPopup] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [userOwn, setUserOwn] = useState(false);
   //const [id] = useState(_uniqueId('prefix-'));
@@ -99,9 +101,11 @@ const Maps = (props) => {
 
   return (
     <>
-      <EditMarker loadJobs={loadJobs} isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace} />
+      <ViewMarker loadJobs={loadJobs} isOpen={showViewPopup} setHide={() => setShowViewPopup(false)} selectedJob={selectedJob} setSelectedJob={setSelectedJob} setSelectedPlace={setSelectedPlace} /> 
+      <EditMarker isOpen={showEditPopup} setHide={() => setShowEditPopup(false)} selectedJob={selectedJob} setSelectedPlace={setSelectedPlace} />
       <h2>Click on the map to add a new vehicle listing</h2>
-      { userOwn ? <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button>: null }
+      { userOwn ? <Button onClick={() => setShowEditPopup(true)}> Edit Listing </Button>: null } &nbsp;&nbsp;
+      <Button onClick={() => setShowViewPopup(true)}> View Listing </Button>
       {/* <Button onClick={saveJobs}> Save Jobs </Button> &nbsp;*/} 
       <div
         style={{
