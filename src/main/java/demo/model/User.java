@@ -48,6 +48,16 @@ public class User{
     private String email;
     private String password;
 
+    private String city;
+
+    private String country;
+
+    private String road;
+
+    private String contactNo;
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -60,5 +70,37 @@ public class User{
     @Override
     public int hashCode() {
         return getId().hashCode();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getRoad() {
+        return road;
+    }
+
+    public void setRoad(String road) {
+        this.road = road;
+    }
+
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
     }
 }

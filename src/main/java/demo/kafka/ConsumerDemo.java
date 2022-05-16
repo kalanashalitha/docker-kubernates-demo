@@ -36,7 +36,7 @@ public class ConsumerDemo {
         //consumer.subscribe(Arrays.asList("first_topic"));
 
         while (true){
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000000));
             records.forEach(record -> {
                 logger.info("partition: {}", record.partition());
                 logger.info("offset: {}", record.offset());
