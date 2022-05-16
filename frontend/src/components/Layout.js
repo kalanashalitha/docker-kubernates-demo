@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         <Container>
           <Nav className="me-auto" style={{ flex: 1 }}>
             <LinkContainer to="/">
-              <Navbar.Brand>Home</Navbar.Brand>
+              <Navbar.Brand>Profile</Navbar.Brand>
             </LinkContainer>
             {/* <LinkContainer to="/jobs">
               <Navbar.Brand>Jobs</Navbar.Brand>

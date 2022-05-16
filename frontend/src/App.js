@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 //import Jobs from './pages/Jobs';
 import Signup from './pages/Signup';
-import Home from './pages/Home';
+import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserContext from './components/UserContext';
 import Maps from './pages/Maps';
@@ -42,7 +42,7 @@ const App = () => {
               
               <ProtectedRoute>
                 <Route path="/" exact>
-                  <Home/>
+                  <Profile/>
                 </Route>
 
                 {/* <Route path="/jobs">
